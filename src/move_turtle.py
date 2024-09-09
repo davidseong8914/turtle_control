@@ -26,6 +26,7 @@ def move_turtle_in_circles():
         pub.publish(vel_msg)
         rate.sleep()
 
+
 if __name__ == '__main__':
     try:
         move_turtle_in_circles()
