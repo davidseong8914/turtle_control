@@ -27,13 +27,14 @@ def initialize_turtle():
         rospy.loginfo("Waiting for the turtle pose to be initialized")
     
     # moves the turtle to the top left corner
-    while current_pose.x > 0.5 or current_pose.y < 12:
+    while current_pose.x > 1 or current_pose.y > 1:
         twist = Twist()
         
-        if current_pose.x > 0.5:
-            twist.linear.x = - 100.0
-        if current_pose.y < 10.5:
-            twist.linear.y = 100.0
+        if current_pose.x > 1:
+            twist.linear.x = - 7.0
+        
+        if current_pose.y > 1:
+            twist.linear.y = - 7.0
         
         pub.publish(twist)
         rate.sleep()
@@ -49,12 +50,8 @@ def write_david():
     rospy.Subscriber('/turtle1/pose', Pose, pose_callback)
     initialize_turtle()
 
-    
+
     # pub = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
-
-
-
-
 
 
 
@@ -63,4 +60,9 @@ if __name__ == '__main__':
         write_david()
 
     except rospy.ROSInterruptException:
+        # stop turtle when script is interrupted
+        pub = ropsy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
+        twist = Twist()
+        pub.publish(twist)
+        rospy.signal_shutdown("Script interrupted")
         pass
