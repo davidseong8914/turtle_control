@@ -20,7 +20,7 @@ def pose_callback(msg):
 def initialize_turtle():
     global current_pose
     pub = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
-    rate = rospy.Rate(10)
+    rate = rospy.Rate(30)
 
     while current_pose is None:
         rate.sleep()
@@ -31,10 +31,14 @@ def initialize_turtle():
         twist = Twist()
         
         if current_pose.x > 1:
-            twist.linear.x = - 7.0
+            twist.linear.x = -5.0
+        else:
+            twist.linear.x = 0.0
         
         if current_pose.y > 1:
-            twist.linear.y = - 7.0
+            twist.linear.y = - 5.0
+        else:
+            twist.linear.y = 0.0
         
         pub.publish(twist)
         rate.sleep()
@@ -61,6 +65,8 @@ if __name__ == '__main__':
 
     except rospy.ROSInterruptException:
         # stop turtle when script is interrupted
+        # press ctrl + z to stop
+
         pub = ropsy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
         twist = Twist()
         pub.publish(twist)
